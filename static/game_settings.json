@@ -1,5 +1,6 @@
 {
     "num-players": 10,
     "positions": ["TOP", "JUN", "MID", "BOT", "SUP"],
-    "weights": [0.95, 1.05, 1.05, 1.05, 0.90]
+    "weights": [0.95, 1.05, 1.05, 1.05, 0.90],
+    "team-names": ["Blue Side", "Red Side"]
 }
