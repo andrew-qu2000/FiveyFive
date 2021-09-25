@@ -52,6 +52,7 @@ span.PlayerInfo {
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.12/lib/draggable.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.12/lib/swappable.js"></script>
+<!--<script src="{{ url_for ('static', filename='require.js') }}"/>-->
 <!--<script src="{{ url_for ('static', filename='node_modules/draggable-es/src/Swappable/Swappable.js') }}"></script>-->
 </head>
 
@@ -109,10 +110,10 @@ span.PlayerInfo {
     </div>
   </div>
 </div>
-<!-- <script>
+<script>
 console.log({{ ratings | safe }}); 
-</script>-->
-<script src="../static/read_players_file.js"></script>
+</script>
+<!--- <script src="{{ url_for('static', filename='read_players_file.js') }}"></script> -->
 <script>
 const swappable = new Swappable.default(document.querySelectorAll('.blue, .red'), {
   draggable: '.PlayerCard'
