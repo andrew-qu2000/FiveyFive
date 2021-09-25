@@ -7,17 +7,22 @@ import pandas as pd
 import time
 from itertools import combinations, permutations
 import random
+import json
 
 start_time = time.time()
 
+f = open("game_settings.json")
+settings = json.load(f)
+f.close()
+
 players = pd.read_csv("inhouse_positional.csv")
 players = players[players['Playing']]
-assert(players.shape[0] == 10)
+assert(players.shape[0] == settings['num_players'])
 # Top, Jun, Mid, Bot, Sup -> 3, 4, 5, 6, 7
 players_mat = players.to_numpy()
 onrole_ratings = [max(row[3:8]) for row in players_mat]
-positions = ["TOP", "JUN", "MID", "BOT", "SUP"]
-weights = [0.95, 1.05, 1.05, 1.05, 0.90]
+positions = settings['positions']
+weights = settings['weights']
 
 
 def calc_team(team_idx):
