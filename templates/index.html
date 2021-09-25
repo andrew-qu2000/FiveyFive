@@ -109,10 +109,10 @@ span.PlayerInfo {
     </div>
   </div>
 </div>
-<script>
-console.log({{ ratings | safe }});
-</script>
-
+<!-- <script>
+console.log({{ ratings | safe }}); 
+</script>-->
+<script src="../static/read_players_file.js"></script>
 <script>
 const swappable = new Swappable.default(document.querySelectorAll('.blue, .red'), {
   draggable: '.PlayerCard'
