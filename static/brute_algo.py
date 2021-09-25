@@ -17,7 +17,7 @@ f.close()
 
 players = pd.read_csv("inhouse_positional.csv")
 players = players[players['Playing']]
-assert(players.shape[0] == settings['num_players'])
+assert(players.shape[0] == settings['num-players'])
 # Top, Jun, Mid, Bot, Sup -> 3, 4, 5, 6, 7
 players_mat = players.to_numpy()
 onrole_ratings = [max(row[3:8]) for row in players_mat]
@@ -51,7 +51,7 @@ def print_team(team_idx, team_name):
         player = players_mat[team_idx[i]]
         print(positions[i], player[0], player[i+3])
     team_score = calc_team(team_idx)
-    print("Team average =", team_score[0])
+    print("Team average = {0:.2f}".format(team_score[0]))
     print("Team offroleness =", team_score[1])
     print("=" * 20)
 
