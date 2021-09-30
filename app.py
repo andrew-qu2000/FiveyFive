@@ -26,10 +26,11 @@ def hello():
         db = firestore.client()
 
     docs = db.collection(u"players").stream()
+    docs_str = ''
     for doc in docs:
-        print(f'{doc.id} => {doc.to_dict()}')
+        docs_str += f'{doc.id} => {doc.to_dict()}'
         
-    return render_template('index.html', ratings=players_json)
+    return render_template('index.html', ratings=players_json, docs=docs_str)
 
 if __name__== '__main__':
     app.run('127.0.0.1', 5000, debug = True)

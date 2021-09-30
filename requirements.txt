@@ -23,9 +23,7 @@ Jinja2==2.11.2
 joblib==0.16.0
 MarkupSafe==1.1.1
 msgpack==1.0.2
-numpy==1.19.1
 packaging==21.0
-pandas==1.1.1
 proto-plus==1.19.2
 protobuf==3.18.0
 pyasn1==0.4.8
