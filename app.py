@@ -18,12 +18,23 @@ def hello():
         #f.write(players_json)
         #f.close()
     
-    firebase_key = os.environ['FIREBASE_KEY']
-    with open("tmp/firebase_key.json", "w") as f:
-        f.write(firebase_key)
-        cred = credentials.Certificate("firebase_key.json")
-        firebase_admin.initialize_app(cred)
-        db = firestore.client()
+    #firebase_key = os.environ['FIREBASE_KEY']
+    #with open("tmp/firebase_key.json", "w") as f:
+    #    f.write(firebase_key)
+    #    cred = credentials.Certificate("firebase_key.json")
+    #    firebase_admin.initialize_app(cred)
+    #    db = firestore.client()
+
+    firebase_key = {
+        'type':os.environ['type'],
+        'project_id':os.environ['project_id'],
+        'private_key':os.environ['private_key'],
+        'client_email':os.environ['client_email'],
+        'token_uri':os.environ['token_uri']
+    }
+    cred = credentials.Certificate(firebase_key)
+    firebase_admin.initialize_app(cred)
+    db = firestore.client()
 
     docs = db.collection(u"players").stream()
     docs_str = ''
