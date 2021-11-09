@@ -30,19 +30,19 @@ def hello():
     firebase_admin.initialize_app(cred)
     db = firestore.client()
 
-    players = pd.read_csv( 'static/inhouse_positional.csv' )
-    players_json = players.to_json(orient='index')
-    parsed = json.loads( players_json )
-    with open("static/players.json", 'w') as f:
-        f.write(players_json)
-        f.close()
+    #players = pd.read_csv( 'static/inhouse_positional.csv' )
+    #players_json = players.to_json(orient='index')
+    #parsed = json.loads( players_json )
+    #with open("static/players.json", 'w') as f:
+        #f.write(players_json)
+        #f.close()
     
-    docs = db.collection(u"players").stream()
-    docs_str = ''
-    for doc in docs:
-        docs_str += f'{doc.id} => {doc.to_dict()}'
-        
-    return render_template('index.html', ratings=players_json, docs=docs_str)
+    doc_stream = db.collection(u"players").stream()
+    docs = {}
+    for doc in doc_stream:
+        doc[doc.id] = doc.to_dict()
+
+    return render_template('index.html', docs=docs)
 
 if __name__== '__main__':
     app.run('127.0.0.1', 5000, debug = True)
