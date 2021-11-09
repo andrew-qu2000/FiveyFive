@@ -61,27 +61,22 @@ span.PlayerInfo {
 <div class="wrapper">
   <div class="blue top">
     <div class="PlayerCard">
-      <span class="PlayerInfo">Andrew</span>
     </div>
   </div>
   <div class="blue jun">
     <div class="PlayerCard">
-      <span class="PlayerInfo">Nick</span>
     </div>
   </div>
   <div class="blue mid">
     <div class="PlayerCard">
-      <span class="PlayerInfo">Jason</span>
     </div>
   </div>
   <div class="blue bot">
     <div class="PlayerCard">
-      <span class="PlayerInfo">Sean</span>
     </div>
   </div>
   <div class="blue sup">
     <div class="PlayerCard">
-      <span class="PlayerInfo">Daniel</span>
     </div>
   </div>
   <div class="PositionCol">TOP</div>
@@ -111,18 +106,86 @@ span.PlayerInfo {
   </div>
 </div>
 <script>
-console.log({{ docs | safe }});
-console.log({{ ratings | safe }});
+class Player{
+  constructor(uniqueId, dict){
+    this.uniqueId = uniqueId;
+    this.name = dict["name"];
+    this.top = dict["rating_top"];
+    this.jun = dict["rating_jun"];
+    this.mid = dict["rating_mid"];
+    this.bot = dict["rating_bot"];
+    this.sup = dict["rating_sup"];
+  }
+}
 </script>
-<!--- <script src="{{ url_for('static', filename='read_players_file.js') }}"></script> -->
 <script>
+var playerData = {{docs | safe}};
+var playerCards = document.getElementsByClassName("PlayerCard");
+function addToEmptyPlayerCard(playerObj, playerCardsInd){
+  var newPlayerInfo = document.createElement("span");
+  newPlayerInfo.classList.add("PlayerInfo");
+  newPlayerInfo.innerHTML = playerObj.name + "\t";
+  newPlayerInfo.setAttribute("data-uniqueId", playerObj.uniqueId);
+  var pos = playerCards[playerCardsInd].parentElement.classList;
+  playerCards[playerCardsInd].appendChild(newPlayerInfo);
+
+  switch(pos[1]){
+    case 'top':
+      newPlayerInfo.innerHTML += playerObj.top;
+      break;
+    case 'jun':
+      newPlayerInfo.innerHTML += playerObj.jun;
+      break;
+    case 'mid':
+      newPlayerInfo.innerHTML += playerObj.mid;
+      break;
+    case 'bot':
+      newPlayerInfo.innerHTML += playerObj.bot;
+      break;
+    case 'sup':
+      newPlayerInfo.innerHTML += playerObj.sup;
+      break;
+  }
+}
+var i = 0;
+var playerDataArr = Object.entries(playerData);
+while (i < playerCards.length) {
+  var keyVal= playerDataArr[i];
+  addToEmptyPlayerCard(new Player(keyVal[0],keyVal[1]), i);
+  i += 1;
+}
+
+function updatePositionRating(swappedPlayerCard){
+  var newPos = "rating_" + swappedPlayerCard.parentElement.classList[1];
+  var playerInfo = swappedPlayerCard.firstElementChild;
+  //console.log(playerInfo.dataset.uniqueid); //attributes become lowercase
+  var name = playerData[playerInfo.dataset.uniqueid]["name"];
+  var newPosRating = playerData[playerInfo.dataset.uniqueid][newPos]
+  playerInfo.innerHTML = name + "\t" + newPosRating;
+}
 const swappable = new Swappable.default(document.querySelectorAll('.blue, .red'), {
   draggable: '.PlayerCard'
 });
 
 swappable.on('swappable:start', () => console.log('swappable:start'));
-swappable.on('swappable:swapped', () => console.log('swappable:swapped'));
-swappable.on('swappable:stop', () => console.log('swappable:stop'));
+swappable.on('drag:over', function(){
+  console.log("drag:over");
+  updatePositionRating(document.getElementsByClassName("draggable-source--is-dragging")[0]);
+  updatePositionRating(document.getElementsByClassName("draggable-mirror")[0]);
+  //the above line doesn't work because the mirror element is still a child of its original parentElement
+  //rewrite the update function to take in the new position or rating as a parameter
+  //instead of calculating it based on the parent
+})
+/*
+swappable.on('swappable:swapped', function(e){
+  console.log('swappable:swapped');
+  updatePositionRating(e.swappedElement);
+  updatePositionRating(document.getElementsByClassName("draggable--original")[0]);
+  updatePositionRating(document.getElementsByClassName("draggable-mirror")[0]);
+
+});
+*/
+swappable.on('swappable:stop', () => console.log('swapped:stop'));
 </script>
 </body>
 </html>
