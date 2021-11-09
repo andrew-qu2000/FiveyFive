@@ -1,9 +1,9 @@
 from flask import Flask, render_template, url_for, request, redirect
 import firebase_admin
 from firebase_admin import credentials, firestore
-import pandas as pd
+#import pandas as pd
 #import numpy as np
-import json
+#import json
 import os
 
 app = Flask(__name__, template_folder='templates')
