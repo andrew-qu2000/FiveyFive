@@ -52,8 +52,8 @@ span.PlayerInfo {
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.12/lib/draggable.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.12/lib/swappable.js"></script>
-<!--<script src="{{ url_for ('static', filename='require.js') }}"/>-->
-<!--<script src="{{ url_for ('static', filename='node_modules/draggable-es/src/Swappable/Swappable.js') }}"></script>-->
+<!--<script src="/static/require.js"/>-->
+<!--<script src="/static/node_modules/draggable-es/src/Swappable/Swappable.js"></script>-->
 </head>
 
 <body>
@@ -110,6 +110,7 @@ class Player{
   constructor(uniqueId, dict){
     this.uniqueId = uniqueId;
     this.name = dict["name"];
+    // Need to generalize this to other games and positions
     this.top = dict["rating_top"];
     this.jun = dict["rating_jun"];
     this.mid = dict["rating_mid"];
@@ -119,7 +120,7 @@ class Player{
 }
 </script>
 <script>
-var playerData = {{docs | safe}};
+var playerData = {'0ZVOrdkATvILql9FpkZQ': {'name': 'Terence', 'rating_bot': 68, 'rating_sup': 60, 'rating_top': 69, 'rating_mid': 77, 'rating_jun': 66}, '1aW8rXTsGeSHoenjNBll': {'name': 'Jordon', 'rating_bot': 75, 'rating_jun': 75, 'rating_mid': 75, 'rating_top': 75, 'rating_sup': 75}, '1kZJphp8mKFhrppR7Z6N': {'rating_top': 65, 'rating_bot': 82, 'rating_jun': 75, 'name': 'Aymen', 'rating_mid': 65, 'rating_sup': 83}, '4Ef1LJadnxxRye3FGmmh': {'rating_bot': 96, 'rating_mid': 89, 'name': 'Sean', 'rating_top': 88, 'rating_jun': 93, 'rating_sup': 91}, '8aib8bcmnSdMoMRkBiM9': {'rating_bot': 69, 'rating_jun': 62, 'rating_mid': 60, 'name': 'Cameron', 'rating_sup': 55, 'rating_top': 60}, 'AwretIU7qfSCfuh3LWzw': {'rating_jun': 94, 'rating_sup': 85, 'rating_mid': 80, 'rating_bot': 72, 'name': 'Nick', 'rating_top': 78}, 'BKLQRAibwubvzYGIOeXI': {'rating_mid': 83, 'rating_sup': 85, 'rating_top': 84, 'name': 'Gavin', 'rating_bot': 82, 'rating_jun': 85}, 'BcuqGG8zc1rRnjWGRiHn': {'rating_top': 83, 'rating_jun': 80, 'name': 'Matthew', 'rating_bot': 65, 'rating_sup': 71, 'rating_mid': 73}, 'GV104QxHvtMdXTdmkGVy': {'rating_jun': 85, 'rating_bot': 85, 'rating_top': 92, 'rating_sup': 86, 'rating_mid': 86, 'name': 'Andrew'}, 'NvMsemlWHB8YyrsArDjZ': {'name': 'Alex', 'rating_bot': 62, 'rating_top': 70, 'rating_sup': 68, 'rating_jun': 69, 'rating_mid': 70}, 'QqjolTCT2oAuePGWeZrZ': {'rating_top': 92, 'rating_bot': 90, 'rating_jun': 87, 'rating_sup': 88, 'name': 'Jason', 'rating_mid': 95}, 'SGB1pMWotCzZNdPISJwV': {'rating_top': 64, 'rating_jun': 67, 'rating_mid': 77, 'rating_bot': 67, 'name': 'Jiajun', 'rating_sup': 66}, 'T3TjvcGdJvd6CoIKpWiw': {'rating_mid': 55, 'rating_sup': 65, 'rating_top': 55, 'rating_bot': 55, 'name': 'Justin', 'rating_jun': 55}, 'XxfRSrDU9BdRhIZYVu7Z': {'rating_sup': 84, 'rating_top': 80, 'rating_bot': 82, 'name': 'Eric', 'rating_mid': 83, 'rating_jun': 82}, 'isEYfiYW1FoBLfGoE4hZ': {'rating_jun': 70, 'rating_sup': 74, 'name': 'Leo', 'rating_bot': 64, 'rating_top': 76, 'rating_mid': 63}, 'kUOTZAI40ANono9zrNps': {'name': 'Gordon Lei', 'rating_sup': 99, 'rating_mid': 99, 'rating_bot': 99, 'rating_top': 99, 'rating_jun': 99}, 'nhyqjZSTzao5IVCJfWGE': {'rating_sup': 76, 'rating_top': 85, 'name': 'Andre', 'rating_jun': 89, 'rating_mid': 81, 'rating_bot': 80}, 'pQrFvDq2IhOYq7hSvB7M': {'rating_mid': 87, 'name': 'Kent', 'rating_top': 84, 'rating_jun': 84, 'rating_sup': 81, 'rating_bot': 75}, 'x4ykk2sHjspi5RBsyQFH': {'rating_top': 75, 'rating_bot': 76, 'rating_jun': 79, 'name': 'Daniel', 'rating_mid': 74, 'rating_sup': 95}};
 var playerCards = document.getElementsByClassName("PlayerCard");
 function addToEmptyPlayerCard(playerObj, playerCardsInd){
   var newPlayerInfo = document.createElement("span");
@@ -128,7 +129,7 @@ function addToEmptyPlayerCard(playerObj, playerCardsInd){
   newPlayerInfo.setAttribute("data-uniqueId", playerObj.uniqueId);
   var pos = playerCards[playerCardsInd].parentElement.classList;
   playerCards[playerCardsInd].appendChild(newPlayerInfo);
-
+  // Need to generalize this to other games and positions
   switch(pos[1]){
     case 'top':
       newPlayerInfo.innerHTML += playerObj.top;
@@ -147,6 +148,7 @@ function addToEmptyPlayerCard(playerObj, playerCardsInd){
       break;
   }
 }
+// Initializes grid. Adds players until full
 var i = 0;
 var playerDataArr = Object.entries(playerData);
 while (i < playerCards.length) {
@@ -155,37 +157,50 @@ while (i < playerCards.length) {
   i += 1;
 }
 
+// Updates the rating of the dragging source based on new position being hovered
 function updatePositionRating(swappedPlayerCard){
   var newPos = "rating_" + swappedPlayerCard.parentElement.classList[1];
   var playerInfo = swappedPlayerCard.firstElementChild;
   //console.log(playerInfo.dataset.uniqueid); //attributes become lowercase
   var name = playerData[playerInfo.dataset.uniqueid]["name"];
-  var newPosRating = playerData[playerInfo.dataset.uniqueid][newPos]
+  var newPosRating = playerData[playerInfo.dataset.uniqueid][newPos];
   playerInfo.innerHTML = name + "\t" + newPosRating;
+}
+// refactor this and above function to practice D-R-Y
+function updateMirrorRating(){
+  var newPos = "rating_" + document.getElementsByClassName("draggable-container--over")[0].classList[1];
+  var mirror_info = document.getElementsByClassName("draggable-mirror")[0].firstElementChild;
+  var name = playerData[mirror_info.dataset.uniqueid]["name"];
+  var newPosRating = playerData[mirror_info.dataset.uniqueid][newPos];
+  mirror_info.innerHTML = name + "\t" + newPosRating;
+
 }
 const swappable = new Swappable.default(document.querySelectorAll('.blue, .red'), {
   draggable: '.PlayerCard'
 });
 
-swappable.on('swappable:start', () => console.log('swappable:start'));
+swappable.on('swappable:start', function(){
+  console.log('swappable:start');
+})
+// Is called any time dragging cursor hovers over new draggable element
+// Updates mirror and source to preview changes to ratings while hovering
 swappable.on('drag:over', function(){
   console.log("drag:over");
   updatePositionRating(document.getElementsByClassName("draggable-source--is-dragging")[0]);
-  updatePositionRating(document.getElementsByClassName("draggable-mirror")[0]);
-  //the above line doesn't work because the mirror element is still a child of its original parentElement
-  //rewrite the update function to take in the new position or rating as a parameter
-  //instead of calculating it based on the parent
+  updateMirrorRating();
 })
-/*
+
+// Is called any time elements swap places while hovering (similar to drag:over?)
 swappable.on('swappable:swapped', function(e){
   console.log('swappable:swapped');
-  updatePositionRating(e.swappedElement);
-  updatePositionRating(document.getElementsByClassName("draggable--original")[0]);
-  updatePositionRating(document.getElementsByClassName("draggable-mirror")[0]);
-
 });
-*/
-swappable.on('swappable:stop', () => console.log('swapped:stop'));
+
+// Is called when cursor is released
+// Need to add functions to actually update ratings, not just preview
+swappable.on('swappable:stop', function(){
+  console.log('swapped:stop');
+});
+
 </script>
 </body>
 </html>
