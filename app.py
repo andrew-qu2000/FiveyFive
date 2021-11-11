@@ -22,7 +22,7 @@ def hello():
     firebase_key = {
         'type':os.environ['type'],
         'project_id':os.environ['project_id'],
-        'private_key':os.environ['private_key'],
+        'private_key':os.environ['private_key'].replace('\\n', '\n'),
         'client_email':os.environ['client_email'],
         'token_uri':os.environ['token_uri']
     }
