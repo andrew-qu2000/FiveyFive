@@ -9,34 +9,19 @@ import os
 app = Flask(__name__, template_folder='templates')
 app.config['EXPLAIN_TEMPLATE_LOADING'] = True
 
+firebase_key = {
+    'type':os.environ['type'],
+    'project_id':os.environ['project_id'],
+    'private_key':os.environ['private_key'].replace('\\n', '\n'),
+    'client_email':os.environ['client_email'],
+    'token_uri':os.environ['token_uri']
+}
+cred = credentials.Certificate(firebase_key)
+firebase_admin.initialize_app(cred)
+db = firestore.client()
+
 @app.route('/')
 def hello():
-
-    #firebase_key = os.environ['FIREBASE_KEY']
-    #with open("tmp/firebase_key.json", "w") as f:
-    #    f.write(firebase_key)
-    #    cred = credentials.Certificate("firebase_key.json")
-    #    firebase_admin.initialize_app(cred)
-    #    db = firestore.client()
-
-    firebase_key = {
-        'type':os.environ['type'],
-        'project_id':os.environ['project_id'],
-        'private_key':os.environ['private_key'].replace('\\n', '\n'),
-        'client_email':os.environ['client_email'],
-        'token_uri':os.environ['token_uri']
-    }
-    cred = credentials.Certificate(firebase_key)
-    firebase_admin.initialize_app(cred)
-    db = firestore.client()
-
-    #players = pd.read_csv( 'static/inhouse_positional.csv' )
-    #players_json = players.to_json(orient='index')
-    #parsed = json.loads( players_json )
-    #with open("static/players.json", 'w') as f:
-        #f.write(players_json)
-        #f.close()
-
     doc_stream = db.collection(u"players").stream()
     docs = {}
     for doc in doc_stream:
