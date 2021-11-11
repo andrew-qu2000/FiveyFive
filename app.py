@@ -40,7 +40,7 @@ def hello():
     doc_stream = db.collection(u"players").stream()
     docs = {}
     for doc in doc_stream:
-        doc[doc.id] = doc.to_dict()
+        docs[doc.id] = doc.to_dict()
 
     return render_template('index.html', docs=docs)
 
