@@ -186,13 +186,13 @@ swappable.on('swappable:start', function(){
 // Updates mirror and source to preview changes to ratings while hovering
 swappable.on('drag:over', function(){
   console.log("drag:over");
-  updatePositionRating(document.getElementsByClassName("draggable-source--is-dragging")[0]);
-  updateMirrorRating();
 })
 
 // Is called any time elements swap places while hovering (similar to drag:over?)
 swappable.on('swappable:swapped', function(e){
   console.log('swappable:swapped');
+  updatePositionRating(document.getElementsByClassName("draggable-source--is-dragging")[0]);
+  updateMirrorRating();
 });
 
 // Is called when cursor is released
