@@ -11,7 +11,7 @@ app.config['EXPLAIN_TEMPLATE_LOADING'] = True
 
 @app.route('/')
 def hello():
-     
+
     #firebase_key = os.environ['FIREBASE_KEY']
     #with open("tmp/firebase_key.json", "w") as f:
     #    f.write(firebase_key)
@@ -36,7 +36,7 @@ def hello():
     #with open("static/players.json", 'w') as f:
         #f.write(players_json)
         #f.close()
-    
+
     doc_stream = db.collection(u"players").stream()
     docs = {}
     for doc in doc_stream:
