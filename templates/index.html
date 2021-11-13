@@ -158,23 +158,23 @@ while (i < playerCards.length) {
 }
 
 // Updates the rating of the dragging source based on new position being hovered
-function updatePositionRating(swappedPlayerCard){
-  var newPos = "rating_" + swappedPlayerCard.parentElement.classList[1];
+function updatePlayerCardRating(swappedPlayerCard, isMirror=false){
+  if (isMirror) {
+    var newPos = "rating_" + document.getElementsByClassName("draggable-container--over")[0].classList[1];
+  }
+  else {
+    var newPos = "rating_" + swappedPlayerCard.parentElement.classList[1];
+  }
   var playerInfo = swappedPlayerCard.firstElementChild;
-  //console.log(playerInfo.dataset.uniqueid); //attributes become lowercase
   var name = playerData[playerInfo.dataset.uniqueid]["name"];
   var newPosRating = playerData[playerInfo.dataset.uniqueid][newPos];
   playerInfo.innerHTML = name + "\t" + newPosRating;
 }
-// refactor this and above function to practice D-R-Y
-function updateMirrorRating(){
-  var newPos = "rating_" + document.getElementsByClassName("draggable-container--over")[0].classList[1];
-  var mirror_info = document.getElementsByClassName("draggable-mirror")[0].firstElementChild;
-  var name = playerData[mirror_info.dataset.uniqueid]["name"];
-  var newPosRating = playerData[mirror_info.dataset.uniqueid][newPos];
-  mirror_info.innerHTML = name + "\t" + newPosRating;
 
+function updateByContainer(container){
+  updatePlayerCardRating(container.firstElementChild);
 }
+
 const swappable = new Swappable.default(document.querySelectorAll('.blue, .red'), {
   draggable: '.PlayerCard'
 });
@@ -182,25 +182,38 @@ const swappable = new Swappable.default(document.querySelectorAll('.blue, .red')
 swappable.on('swappable:start', function(){
   console.log('swappable:start');
 })
-// Is called any time dragging cursor hovers over new draggable element
-// Updates mirror and source to preview changes to ratings while hovering
-swappable.on('drag:over', function(){
-  console.log("drag:over");
-})
+
+var originalContainer;
+var swappingContainer;
 
 // Is called any time elements swap places while hovering (similar to drag:over?)
 swappable.on('swappable:swapped', function(e){
   console.log('swappable:swapped');
-  updatePositionRating(document.getElementsByClassName("draggable-source--is-dragging")[0]);
-  updateMirrorRating();
+  // update source element and its mirror
+  updatePlayerCardRating(document.getElementsByClassName("draggable-source--is-dragging")[0]);
+  updatePlayerCardRating(document.getElementsByClassName("draggable-mirror")[0], true);
+  // update elements that get swapped with
+  if (swappingContainer) {
+    updateByContainer(swappingContainer);
+  }
+  else {
+    // handles first swap, when swappingContainer will be none
+    updatePlayerCardRating(e.swappedElement);
+  }
+  // maintain latest swapped elements to use in drag:stopped
+  originalContainer = document.getElementsByClassName("draggable-container--is-dragging")[0];
+  swappingContainer = document.getElementsByClassName("draggable-container--over")[0];
 });
 
-// Is called when cursor is released
-// Need to add functions to actually update ratings, not just preview
-swappable.on('swappable:stop', function(){
-  console.log('swapped:stop');
+// Gets fired when draggable finished (Added in: v1.0.0-beta.12)
+swappable.on('drag:stopped', function(){
+  console.log('drag:stopped');
+  // update the two elements being swapped when cursor is released
+  updateByContainer(swappingContainer);
+  updateByContainer(originalContainer);
 });
 
+// Solution(?)
 </script>
 </body>
 </html>
