@@ -182,30 +182,40 @@ while (i < playerCards.length) {
   addToEmptyPlayerCard(new Player(keyVal[0],keyVal[1]), i);
   i += 1;
 }
-updateAverage();
-
-console.log(blueRatings);
-console.log(redRatings);
+updateAverages();
 
 // Updates the rating of the dragging source based on new position being hovered
 function updatePlayerCardRating(swappedPlayerCard, isMirror=false){
   if (isMirror) {
-    var newPos = "rating_" + document.getElementsByClassName("draggable-container--over")[0].classList[1];
+    var newDbPos = "rating_" + document.getElementsByClassName("draggable-container--over")[0].classList[1];
   }
   else {
-    var newPos = "rating_" + swappedPlayerCard.parentElement.classList[1];
+    var newColorAndPos = swappedPlayerCard.parentElement.classList;
+    console.log(swappedPlayerCard.firstElementChild.innerHTML);
+    var newDbPos = "rating_" + newColorAndPos[1];
   }
   var playerInfo = swappedPlayerCard.firstElementChild;
   var name = playerData[playerInfo.dataset.uniqueid]["name"];
-  var newPosRating = playerData[playerInfo.dataset.uniqueid][newPos];
-  playerInfo.innerHTML = name + "\t" + newPosRating;
+  var newRating = playerData[playerInfo.dataset.uniqueid][newDbPos];
+  playerInfo.innerHTML = name + "\t" + newRating;
+
+  if (newColorAndPos) {
+    if (newColorAndPos[0] == 'blue') {
+      blueRatings[newColorAndPos[1]] = newRating;
+    }
+    else {
+      redRatings[newColorAndPos[1]] = newRating;
+    }
+    updateAverages();
+  }
+
 }
 
 function updateByContainer(container){
   updatePlayerCardRating(container.firstElementChild);
 }
 
-function updateAverage() {
+function updateAverages() {
   var blueavg = Object.values(blueRatings).reduce(function(a,b) {return a + b;}, 0) / Object.keys(blueRatings).length;
   var redavg = Object.values(redRatings).reduce(function(a,b) {return a + b;}, 0) / Object.keys(redRatings).length;
   document.getElementById("blue avg").innerHTML = blueavg;
@@ -229,14 +239,13 @@ swappable.on('swappable:swapped', function(e){
   // update source element and its mirror
   updatePlayerCardRating(document.getElementsByClassName("draggable-source--is-dragging")[0]);
   updatePlayerCardRating(document.getElementsByClassName("draggable-mirror")[0], true);
-  // update elements that get swapped with
+  // update element that gets swapped with
   if (swappingContainer) {
     updateByContainer(swappingContainer);
   }
-  else {
-    // handles first swap, when swappingContainer will be none
-    updatePlayerCardRating(e.swappedElement);
-  }
+  // handles first swap, when swappingContainer will be none
+  // or when more than one element gets passed over during one swap
+  updatePlayerCardRating(e.swappedElement);
   // maintain latest swapped elements to use in drag:stopped
   originalContainer = document.getElementsByClassName("draggable-container--is-dragging")[0];
   swappingContainer = document.getElementsByClassName("draggable-container--over")[0];
@@ -248,7 +257,7 @@ swappable.on('drag:stopped', function(){
   // update the two elements being swapped when cursor is released
   updateByContainer(swappingContainer);
   updateByContainer(originalContainer);
-  updateAverage();
+  //updateAverages();
 });
 
 // Solution(?)
