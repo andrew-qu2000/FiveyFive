@@ -26,15 +26,23 @@ def run_trials(players, team_size = 5, n = 100):
         margin, runtime = run_trial(players, team_size)
         margins.append(margin)
         runtimes.append(runtime)
-    print_stats(margins, 'margin')
-    print_stats(runtimes, 'runtime')
+    print_basic_stats(margins, 'margin')
+    print_quantiles(margins, 'margin', 100)
+    print_basic_stats(runtimes, 'runtime')
 
-def print_stats(data, label):
+def print_basic_stats(data, label):
     print("Trials: ", len(data))
     print("Lowest {}: ".format(label), min(data))
     print("Median {}: ".format(label), statistics.median(data))
     print("Average {}: ".format(label), statistics.mean(data))
     print("Highest {}: ".format(label), max(data))
+
+def print_quantiles(data, label, n = 4):
+    # we don't really know that it's inclusive but i prefer it
+    print("Quantiles for", label)
+    quants = statistics.quantiles(data=data, n=n, method='inclusive')
+    for i in range(n - 1):
+        print((i+1) / n, '=', quants[i])
 
 if __name__=="__main__":
     TEAM_SIZE = 5
