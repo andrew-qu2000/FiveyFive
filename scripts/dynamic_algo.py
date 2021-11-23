@@ -114,13 +114,9 @@ class DynamicAlgo():
                 temp = deepcopy(matchup)
                 # perform a single swap and add to list of states
                 temp[x], temp[y+1] = temp[y+1], temp[x]
-                # check if the state has already been explored
-                tup = tuple(temp)
-                if tup in self.explored:
-                    continue
-                else: # add to list of states and to the explored dict
-                    states.append(temp)
-                    self.explored.add(tup)
+                # add to list of states and to the explored dict
+                states.append(temp)
+                self.explored.add(tuple(temp)) # a set will not add dupes
         return states
 
 if __name__ == "__main__":
