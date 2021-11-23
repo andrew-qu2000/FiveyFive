@@ -124,9 +124,13 @@ class DynamicAlgo():
         return states
 
 if __name__ == "__main__":
-    a, b, c, d = ["ay", 68, 66], ["be", 82, 75], ["ce", 92, 93], ["de", 72, 84]
-    squad = {'A':a, 'B':b, 'C':c, 'D':d}
+    #a, b, c, d = ["ay", 68, 66], ["be", 82, 75], ["si", 92, 93], ["di", 72, 84]
+    #squad = {'A':a, 'B':b, 'C':c, 'D':d}
+    
+    a, b, c = ["ay", 51, 94, 83], ["be", 97, 73, 79], ["si", 66, 91, 74]
+    d, e, f = ["di", 86, 85, 52], ["ee", 77, 99, 96], ["ef", 70, 54, 72]
+    squad = {'A':a, 'B':b, 'C':c, 'D':d, 'E':e, 'F':f}
+    
     matchup = list(squad.keys())
-
     da = DynamicAlgo(squad)
     print(da.matchup())
