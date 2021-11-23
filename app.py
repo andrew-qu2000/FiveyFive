@@ -22,6 +22,7 @@ db = firestore.client()
 
 @app.route('/')
 def hello():
+    """Load home page using dict of players from database"""
     doc_stream = db.collection(u"players").stream()
     docs = {}
     for doc in doc_stream:
