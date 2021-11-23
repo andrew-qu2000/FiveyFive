@@ -8,7 +8,7 @@ class DynamicAlgo():
     Class for algorithmic approach to selecting the best team matchup.
 
     Attributes:
-        squad    (dict): a dictionary of Players with keys as UUID
+        squad    (dict): a dictionary of Players with keys as UUIDs
         team_size (int): index that divides the squad into two teams
         explored  (set): a set of explored states, initialized empty
     """
@@ -21,9 +21,9 @@ class DynamicAlgo():
         """
         Main method for determining the best matchup from a squad
 
-        Given: squad of 10 players with 5 ratings each
-        Return: two subsets of 5 players where the average of each 
-                subset yields the smallest margin
+        Given: squad of N players with N/2 ratings each
+        Return: a matchup of N players where the average of each 
+                team yields the smallest margin
 
         This is a variation of the Simulated Annealing technique. The algorithm 
         derives possible states from a starting matchup by performing single 
