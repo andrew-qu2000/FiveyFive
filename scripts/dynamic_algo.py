@@ -127,6 +127,5 @@ if __name__ == "__main__":
     d, e, f = ["di", 86, 85, 52], ["ee", 77, 99, 96], ["ef", 70, 54, 72]
     squad = {'A':a, 'B':b, 'C':c, 'D':d, 'E':e, 'F':f}
     
-    matchup = list(squad.keys())
     da = DynamicAlgo(squad)
     print(da.matchup())
