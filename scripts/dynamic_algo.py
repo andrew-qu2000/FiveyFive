@@ -10,12 +10,12 @@ class DynamicAlgo():
     Attributes:
         squad    (dict): a dictionary of Players with keys as UUID
         team_size (int): index that divides the squad into two teams
-        explored (dict): a dictionary of explored states, values are None
+        explored  (set): a set of explored states, initialized empty
     """
     def __init__(self, squad):
         self.squad = squad
         self.team_size = int(len(squad) / 2)
-        self.explored = {}
+        self.explored = set()
 
     def matchup(self):
         """
@@ -33,21 +33,41 @@ class DynamicAlgo():
         By fully implementing the Simulated Annealing technique, a global 
         minimum can be achieved.
         """
+        margins = [] # list for keeping track of an iteration's margins
         # select a starting matchup (easiest is the initial squad itself)
-        matchup = list(self.squad.keys())
-        # determine the ratings for the current matchup
-        ratings = self.determine_ratings(matchup)
-        # calculate the margin of the matchup
-        margin = self.calc_margin(ratings)
-        # get next states and their margins
-        states = self.next_states(matchup)
-        for state in states:
-            ratings = self.determine_ratings(state)
-            print("==========")
-            print(state)
-            margin = self.calc_margin(ratings)
+        curr_matchup = list(self.squad.keys())
+        
+        while curr_matchup:
+            # determine the ratings and calculate margin for the matchup
+            curr_ratings = self.determine_ratings(curr_matchup)
+            margins.append((self.calc_margin(curr_ratings), curr_matchup))
 
-        pass
+            # get next states and their margins
+            states = self.get_states(curr_matchup)
+        
+            for state in states:
+                ratings = self.determine_ratings(state)
+                margins.append((self.calc_margin(ratings), state))
+
+            # get states with smallest margin and reset margins list
+            min_margin = min(margins)[0]
+            min_states = [s[1] for _, s in enumerate(margins) if s[0] == min_margin]
+            margins = []
+
+            if curr_matchup in min_states: # best matchup has been found
+                return curr_matchup
+            else: 
+                next_state = min_states.pop()
+                if min_margin:
+                    # get the next state with the lowest margin
+                    # if there are more than one state in min_states, 
+                    # a local best matchup is found.
+                    curr_matchup = next_state
+                else: 
+                # the next state has a margin of 0, best matchup has been found
+                    return next_state
+
+                   
 
     def calc_margin(self, ratings):
         """
@@ -61,7 +81,7 @@ class DynamicAlgo():
         team_r = ratings[:self.team_size]
         team_b = ratings[self.team_size:]
         margin = abs(sum(r for _, r in team_r) - sum(r for _, r in team_b))
-        print("teams:", team_r, "|", team_b, " margin:", margin)
+        #print("teams:", team_r, "|", team_b, " margin:", margin)
         return margin
 
     def determine_ratings(self, matchup):
@@ -75,14 +95,16 @@ class DynamicAlgo():
         for idx, player in enumerate(matchup):
             # grab the correct rating according to the pos on team
             # accounts for the first element being the name of the player
-            rated.append((player, self.squad[player][1 + idx % self.team_size]))
+            rating_ind = (idx % self.team_size) + 1
+            rated.append((player, self.squad[player][rating_ind]))
         return rated
 
-    def next_states(self, matchup):
+    def get_states(self, matchup):
         """
         Perform single-swaps between players to get the next matchups
 
-        Disregard duplicate states by not performing the same swaps
+        Disregard duplicate states by not performing the same swaps.
+        Also disregard if the state has been explored already.
         """
         states = []
         match_size = int(len(matchup)) - 1
@@ -93,17 +115,18 @@ class DynamicAlgo():
                 # perform a single swap and add to list of states
                 temp[x], temp[y+1] = temp[y+1], temp[x]
                 # check if the state has already been explored
-                if temp in self.explored.keys():
+                tup = tuple(temp)
+                if tup in self.explored:
                     continue
-                else: # else, add to list of states and to the explored dict
+                else: # add to list of states and to the explored dict
                     states.append(temp)
-                    self.explored[temp] = None
+                    self.explored.add(tup)
         return states
 
+if __name__ == "__main__":
+    a, b, c, d = ["ay", 68, 66], ["be", 82, 75], ["ce", 92, 93], ["de", 72, 84]
+    squad = {'A':a, 'B':b, 'C':c, 'D':d}
+    matchup = list(squad.keys())
 
-a, b, c, d = ["A", 68, 66], ["B", 82, 75], ["C", 92, 93], ["D", 72, 84]
-squad = {135:a, 246:b, 357:c, 468:d}
-matchup = list(squad.keys())
-
-da = DynamicAlgo(squad)
-da.matchup()
+    da = DynamicAlgo(squad)
+    print(da.matchup())
