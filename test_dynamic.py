@@ -4,6 +4,18 @@ import random
 import statistics
 
 def run_trial(players, team_size = 5):
+    """Performs the dynamic algorithm and returns metrics.
+
+    Forms two random initial teams out of the given players.
+    Uses the dynamic algorithm to find a close matchup.
+    Returns skill margin between teams and runtime of the algorithm.
+
+    Positional arguments:
+    players (list): 2D list of players represented as [name, pos1, pos2 ...]
+
+    Keyword arguments:
+    team_size (int): number of players on each team
+    """
     chosen_players = random.sample(players, TEAM_SIZE * 2)
     players_dict = {}
     for i in range(len(chosen_players)):
@@ -20,6 +32,18 @@ def run_trial(players, team_size = 5):
     return margin, runtime
 
 def run_trials(players, team_size = 5, n = 100):
+    """Performs many trials of the dynamic algorithm.
+
+    Repeatedly calls run_trial and stores the results.
+    Prints statistics on performance metrics.
+
+    Positional arguments:
+    players (list) -- players to pass to run_trial()
+
+    Keyword arguments:
+    team_size (int) -- number of players on each team
+    n (int) -- number of trials to perform
+    """
     margins = []
     runtimes = []
     for i in range(n):
@@ -31,6 +55,15 @@ def run_trials(players, team_size = 5, n = 100):
     print_basic_stats(runtimes, 'runtime')
 
 def print_basic_stats(data, label):
+    """Prints statistics on a set of numeric data.
+
+    Calculates and prints the minimum, median, mean, and maximum of a list of
+    numbers.
+
+    Positional arguments:
+    data (iterable): iterable container of numbers
+    label (str): name of this dataset
+    """
     print("Trials: ", len(data))
     print("Lowest {}: ".format(label), min(data))
     print("Median {}: ".format(label), statistics.median(data))
@@ -38,6 +71,17 @@ def print_basic_stats(data, label):
     print("Highest {}: ".format(label), max(data))
 
 def print_quantiles(data, label, n = 4):
+    """Prints quantiles of a set of numeric data.
+
+    Calculates and prints quantile thresholds.
+
+    Positional arguments:
+    data (iterable): iterable container of numbers
+    label (str): name of this dataset
+
+    Keyword arguments:
+    n (int): number of quantiles to create
+    """
     # we don't really know that it's inclusive but i prefer it
     print("Quantiles for", label)
     quants = statistics.quantiles(data=data, n=n, method='inclusive')
