@@ -16,6 +16,8 @@ class DynamicAlgo():
         self.squad = squad
         self.team_size = int(len(squad) / 2)
         self.explored = set()
+        self.rating_names = ['rating_top', 'rating_jun', 'rating_mid', 'rating_bot', 'rating_sup']
+
 
     def matchup(self):
         """
@@ -95,8 +97,9 @@ class DynamicAlgo():
         for idx, player in enumerate(matchup):
             # grab the correct rating according to the pos on team
             # accounts for the first element being the name of the player
-            rating_ind = (idx % self.team_size) + 1
-            rated.append((player, self.squad[player][rating_ind]))
+            rating_ind = idx % self.team_size
+            rating_name = self.rating_names[rating_ind]
+            rated.append((player, self.squad[player][rating_name]))
         return rated
 
     def get_states(self, matchup):
