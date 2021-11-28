@@ -10,7 +10,7 @@
 }
 div {
   font-family: verdana;
-  font-size: 20px;
+  font-size: 30px;
   color: white;
 }
 div.blue {
@@ -55,6 +55,7 @@ div.red {
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.12/lib/draggable.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.12/lib/swappable.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!--<script src="/static/require.js"/>-->
 <!--<script src="/static/node_modules/draggable-es/src/Swappable/Swappable.js"></script>-->
 </head>
@@ -116,6 +117,9 @@ div.red {
     <span id="red avg"></span>
   </div>
 </div>
+<div>
+  <input type="button" value="Run Matchup Algorithm" onclick="runDynamic()">
+</div>
 <script>
 /**
 * @typedef {Object} Player
@@ -142,6 +146,30 @@ var playerData = {{ docs | safe }};
 var playerCards = document.getElementsByClassName("PlayerCard");
 var blueRatings = {};
 var redRatings = {};
+
+/**
+ * Pass the current matchup of Players back to Flask in order
+ * to run the dynamic matchup algorithm.
+ * @param {}
+ * @paran {}
+ */
+function runDynamic() {
+    // get the current list of players in the matchup in order by team
+    currPlayers = document.getElementsByClassName("PlayerInfo");
+    // grab each players' data in order to pass back to Flask
+    matchup = {};
+    for (let player of currPlayers) {
+      id = player.getAttribute("data-uniqueid");
+      matchup[id] = playerData[id];
+    }
+
+    $.post({
+      url: "/_dynamic_algo", 
+      data: {
+        'matchup': JSON.stringify(matchup)
+      }
+    });
+}
 
 /**
 * Create a PlayerInfo element from a Player Object and add it
