@@ -3,7 +3,7 @@ import time
 import random
 import statistics
 
-def run_trial(players, team_size = 5):
+def run_trial(players, rating_names, team_size = 5):
     """Performs the dynamic algorithm and returns metrics.
 
     Forms two random initial teams out of the given players.
@@ -12,14 +12,18 @@ def run_trial(players, team_size = 5):
 
     Positional arguments:
     players (list): 2D list of players represented as [name, pos1, pos2 ...]
-
+    rating_names (list): list of positional names to be used as keys (top, jun, mid ...)
+    
     Keyword arguments:
     team_size (int): number of players on each team
     """
     chosen_players = random.sample(players, TEAM_SIZE * 2)
     players_dict = {}
-    for i in range(len(chosen_players)):
-        players_dict[i] = chosen_players[i]
+    for player_idx in range(len(chosen_players)):
+        single_dict = {'name':chosen_players[player_idx][0]}
+        for pos_idx in range(len(rating_names)):
+            single_dict[rating_names[pos_idx]] = chosen_players[player_idx][pos_idx+1]
+        players_dict[player_idx] = single_dict
     DA = dynamic_algo.DynamicAlgo(players_dict)
     algo_start_time = time.time()
     matchup = DA.matchup()
@@ -31,7 +35,7 @@ def run_trial(players, team_size = 5):
     #print("Time elapsed: ", algo_end_time - algo_start_time)
     return margin, runtime
 
-def run_trials(players, team_size = 5, n = 100):
+def run_trials(players, rating_names, team_size = 5, n = 100):
     """Performs many trials of the dynamic algorithm.
 
     Repeatedly calls run_trial and stores the results.
@@ -47,7 +51,7 @@ def run_trials(players, team_size = 5, n = 100):
     margins = []
     runtimes = []
     for i in range(n):
-        margin, runtime = run_trial(players, team_size)
+        margin, runtime = run_trial(players, rating_names, team_size)
         margins.append(margin)
         runtimes.append(runtime)
     print_basic_stats(margins, 'margin')
@@ -91,6 +95,7 @@ def print_quantiles(data, label, n = 4):
 if __name__=="__main__":
     TEAM_SIZE = 5
     players_lst = []
+    positions = ['rating_top', 'rating_jun', 'rating_mid', 'rating_bot', 'rating_sup']
     with open("test_dynamic.csv") as f:
         for line in f:
             line = line.strip('\n').split(',')
@@ -103,4 +108,4 @@ if __name__=="__main__":
                     pass
                 ind += 1
             players_lst.append(line)
-    run_trials(players_lst, 5, 5000)
+    run_trials(players_lst, positions, 5, 100000)
