@@ -126,9 +126,17 @@ if __name__ == "__main__":
     #a, b, c, d = ["ay", 68, 66], ["be", 82, 75], ["si", 92, 93], ["di", 72, 84]
     #squad = {'A':a, 'B':b, 'C':c, 'D':d}
     
-    a, b, c = ["ay", 51, 94, 83], ["be", 97, 73, 79], ["si", 66, 91, 74]
-    d, e, f = ["di", 86, 85, 52], ["ee", 77, 99, 96], ["ef", 70, 54, 72]
-    squad = {'A':a, 'B':b, 'C':c, 'D':d, 'E':e, 'F':f}
+    a = {'rating_top': 69, 'rating_mid': 77, 'name': 'Terence', 'rating_bot': 68, 'rating_sup': 60, 'rating_jun': 66}
+    b = {'rating_top': 75, 'rating_bot': 75, 'name': 'Jordon', 'rating_mid': 75, 'rating_jun': 75, 'rating_sup': 75}
+    c = {'rating_top': 65, 'rating_mid': 65, 'rating_jun': 75, 'rating_sup': 83, 'name': 'Aymen', 'rating_bot': 82}
+    d = {'rating_jun': 93, 'rating_top': 88, 'rating_bot': 96, 'rating_sup': 91, 'rating_mid': 89, 'name': 'Sean'}
+    e = {'rating_top': 60, 'name': 'Cameron', 'rating_bot': 69, 'rating_sup': 55, 'rating_jun': 62, 'rating_mid': 60}
+    f = {'rating_bot': 72, 'rating_jun': 94, 'rating_mid': 80, 'name': 'Nick', 'rating_sup': 85, 'rating_top': 78}
+    g = {'name': 'Gavin', 'rating_mid': 83, 'rating_jun': 85, 'rating_top': 84, 'rating_sup': 85, 'rating_bot': 82}
+    h = {'rating_sup': 71, 'rating_mid': 73, 'name': 'Matthew', 'rating_top': 83, 'rating_bot': 65, 'rating_jun': 80}
+    i = {'rating_sup': 86, 'name': 'Andrew', 'rating_bot': 85, 'rating_jun': 85, 'rating_top': 92, 'rating_mid': 86}
+    j = {'rating_top': 70, 'name': 'Alex', 'rating_mid': 70, 'rating_jun': 69, 'rating_sup': 68, 'rating_bot': 62}
+    squad = {'A':a, 'B':b, 'C':c, 'D':d, 'E':e, 'F':f, 'G':g, 'H':h, 'I':i, 'J':j}
     
     da = DynamicAlgo(squad)
     print(da.matchup())
