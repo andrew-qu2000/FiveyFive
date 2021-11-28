@@ -3,7 +3,8 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 #import pandas as pd
 #import numpy as np
-#import json
+from scripts.dynamic_algo import DynamicAlgo
+import json
 import os
 
 app = Flask(__name__, template_folder='templates')
@@ -29,6 +30,15 @@ def hello():
         docs[doc.id] = doc.to_dict()
 
     return render_template('index.html', docs=docs)
+
+@app.route('/_dynamic_algo', methods = ['POST'])
+def run_dynamic_algo():
+    #print("data received for dynamic algo")
+    data = json.loads(request.form['matchup'])
+
+    DA = DynamicAlgo(data)
+    best_matchup = DA.matchup()
+    print(best_matchup)
 
 if __name__== '__main__':
     app.run('127.0.0.1', 5000, debug = True)
