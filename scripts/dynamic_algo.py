@@ -67,7 +67,7 @@ class DynamicAlgo():
                     curr_matchup = next_state
                 else: 
                 # the next state has a margin of 0, best matchup has been found
-                    return self.compile_data(next_state)
+                    return next_state
 
     def calc_margin(self, ratings):
         """
@@ -119,13 +119,6 @@ class DynamicAlgo():
                 states.append(temp)
                 self.explored.add(tuple(temp)) # a set will not add dupes
         return states
-
-    def compile_data(self, matchup):
-        """Get the data corresponding to each player's UUID"""
-        final_matchup = {}
-        for player in matchup:
-            final_matchup[player] = self.squad[player]
-        return final_matchup
 
 if __name__ == "__main__":
     #a, b, c, d = ["ay", 68, 66], ["be", 82, 75], ["si", 92, 93], ["di", 72, 84]
