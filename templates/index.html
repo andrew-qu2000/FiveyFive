@@ -164,9 +164,23 @@ function runDynamic() {
     }
 
     $.post({
-      url: "/_dynamic_algo", 
+      url: "/_dynamic_algo",
       data: {
         'matchup': JSON.stringify(matchup)
+      },
+      success: function(matchup) {
+        // Nuke existing teams
+        document.querySelectorAll('.PlayerInfo').forEach(e => e.remove());
+        // Use regex to convert json.dumps(matchup) into an array
+        matchup = matchup.replace(/[\[\]'"]+/g, '').split(',');
+        // Add players in the order they appear in matchup
+        var i = 0;
+        for (let uuid of matchup) {
+          uuid = uuid.trim()
+          addToEmptyPlayerCard(new Player(uuid, playerData[uuid]), i);
+          i += 1;
+        }
+        updateAverages();
       }
     });
 }
@@ -239,7 +253,7 @@ function updatePlayerCardRating(swappedPlayerCard, isMirror=false){
   }
   else {
     var newColorAndPos = swappedPlayerCard.parentElement.classList;
-    console.log(swappedPlayerCard.firstElementChild.innerHTML);
+    //console.log(swappedPlayerCard.firstElementChild.innerHTML);
     var newDbPos = "rating_" + newColorAndPos[1];
   }
   var playerInfo = swappedPlayerCard.firstElementChild;
@@ -284,7 +298,7 @@ const swappable = new Swappable.default(document.querySelectorAll('.blue, .red')
 });
 
 swappable.on('swappable:start', function(){
-  console.log('swappable:start');
+  //console.log('swappable:start');
 })
 
 var originalContainer;
@@ -292,7 +306,7 @@ var swappingContainer;
 
 // Is called any time elements swap places while hovering (similar to drag:over?)
 swappable.on('swappable:swapped', function(e){
-  console.log('swappable:swapped');
+  //console.log('swappable:swapped');
   // update source element and its mirror
   updatePlayerCardRating(document.getElementsByClassName("draggable-source--is-dragging")[0]);
   updatePlayerCardRating(document.getElementsByClassName("draggable-mirror")[0], true);
@@ -310,7 +324,7 @@ swappable.on('swappable:swapped', function(e){
 
 // Gets fired when draggable finished (Added in: v1.0.0-beta.12)
 swappable.on('drag:stopped', function(){
-  console.log('drag:stopped');
+  //console.log('drag:stopped');
   // update the two elements being swapped when cursor is released
   updateByContainer(swappingContainer);
   updateByContainer(originalContainer);
