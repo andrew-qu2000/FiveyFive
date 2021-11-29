@@ -12,7 +12,8 @@ def run_trial(players, rating_names, team_size = 5):
 
     Positional arguments:
     players (list): 2D list of players represented as [name, pos1, pos2 ...]
-
+    rating_names (list): list of positional names to be used as keys (top, jun, mid ...)
+    
     Keyword arguments:
     team_size (int): number of players on each team
     """
