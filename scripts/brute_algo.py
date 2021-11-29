@@ -1,5 +1,8 @@
 """
-brute_algo
+This approach guarantees that the global best matchup is selected.
+However, the runtime of the algorithm does increase as the size of 
+the teams increases. This is not ideal when trying to serve a best
+matchup to a client in a timely manner.
 """
 
 from itertools import permutations
@@ -25,11 +28,6 @@ class BruteAlgo():
         Given: squad of N players with N/2 ratings each
         Return: a matchup of N players where the average of each 
                 team yields the smallest margin
-
-        This approach guarantees that the global best matchup is selected.
-        However, the runtime of the algorithm does increase as the size of 
-        the teams increases. This is not ideal when trying to serve a best
-        matchup to a client in a timely manner.
         """
         margins = set()
         keys = list(self.squad.keys())
