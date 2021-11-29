@@ -1,5 +1,11 @@
 """
-dynamic_algo
+This is a variation of the Simulated Annealing technique. The algorithm 
+derives possible states from a starting matchup by performing single 
+player swaps and deriving the subsequent state's margin.
+
+The current state of the algorithm only returns a local minimum margin.
+By fully implementing the Simulated Annealing technique, a global 
+minimum can be achieved.
 """
 from copy import deepcopy
 
@@ -26,14 +32,6 @@ class DynamicAlgo():
         Given: squad of N players with N/2 ratings each
         Return: a matchup of N players where the average of each 
                 team yields the smallest margin
-
-        This is a variation of the Simulated Annealing technique. The algorithm 
-        derives possible states from a starting matchup by performing single 
-        player swaps and deriving the subsequent state's margin.
-
-        The current state of the algorithm only returns a local minimum margin.
-        By fully implementing the Simulated Annealing technique, a global 
-        minimum can be achieved.
         """
         margins = [] # list for keeping track of an iteration's margins
         # select a starting matchup (easiest is the initial squad itself)
