@@ -4,7 +4,7 @@ This is the test suite for dynamic_algo.py
 
 from unittest import TestCase
 
-from scripts.dynamic_algo import DynamicAlgo 
+from scripts.dynamic_algo import DynamicAlgo
 
 # sample data
 a = {'rating_top': 69, 'rating_mid': 77, 'name': 'Terence', 'rating_bot': 68, 'rating_sup': 60, 'rating_jun': 66}
@@ -42,7 +42,7 @@ class DynamicTestCase(TestCase):
 
     def test_determine_ratings_length(self):
         """
-        Ensure equal input and output lengths 
+        Ensure equal input and output lengths
         """
         initial_len = len(DA.squad)
         final_len = len(DA.determine_ratings(DA.squad.keys()))
@@ -71,3 +71,9 @@ class DynamicTestCase(TestCase):
         ratings = DA.determine_ratings(matchup)
         margin = DA.calc_margin(ratings)
         self.assertGreaterEqual(margin, 0)
+
+    def test_fail_on_purpose(self):
+        """
+        Fail and see if this prevents automatic deployment to Heroku through Github Actions
+        """
+        self.assertEqual(0,1)
