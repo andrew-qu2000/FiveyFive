@@ -35,10 +35,9 @@ def hello():
 def run_dynamic_algo():
     #print("data received for dynamic algo")
     data = json.loads(request.form['matchup'])
-
     DA = DynamicAlgo(data)
     best_matchup = DA.matchup()
-    print(best_matchup)
+    return json.dumps(best_matchup)
 
 if __name__== '__main__':
     app.run('127.0.0.1', 5000, debug = True)
