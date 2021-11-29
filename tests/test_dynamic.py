@@ -3,6 +3,7 @@ This is the test suite for dynamic_algo.py
 """
 
 from unittest import TestCase
+
 from scripts.dynamic_algo import DynamicAlgo 
 
 # sample data
@@ -20,10 +21,9 @@ squad = {'A':a, 'B':b, 'C':c, 'D':d, 'E':e, 'F':f, 'G':g, 'H':h, 'I':i, 'J':j}
 team_size = int(len(squad)/2)
 rating_names = ['rating_top', 'rating_jun', 'rating_mid', 'rating_bot', 'rating_sup']
 
-class DynamicTestCase(TestCase):
+DA = DynamicAlgo(squad)
 
-    def __init__(self):
-        self.DA = DynamicAlgo(squad)
+class DynamicTestCase(TestCase):
 
     def test_class_attributes(self):
         """
@@ -35,17 +35,17 @@ class DynamicTestCase(TestCase):
         rating_names: should be
             ['rating_top', 'rating_jun', 'rating_mid', 'rating_bot', 'rating_sup']
         """
-        self.assertEqual(self.DA.squad, squad)
-        self.assertEqual(self.DA.team_size, team_size)
-        self.assertFalse(self.DA.explored)
-        self.assertEqual(self.DA.rating_names, rating_names)
+        self.assertEqual(DA.squad, squad)
+        self.assertEqual(DA.team_size, team_size)
+        self.assertFalse(DA.explored)
+        self.assertEqual(DA.rating_names, rating_names)
 
     def test_determine_ratings_length(self):
         """
         Ensure equal input and output lengths 
         """
-        initial_len = len(self.DA.squad)
-        final_len = self.DA.determine_ratings(self.squad.keys())
+        initial_len = len(DA.squad)
+        final_len = len(DA.determine_ratings(DA.squad.keys()))
 
         self.assertEqual(initial_len, final_len)
 
@@ -53,13 +53,13 @@ class DynamicTestCase(TestCase):
         """
         Make sure that the ratings of the players matches the players
         """
-        list_of_players = list(self.DA.squad.keys())
+        list_of_players = list(DA.squad.keys())
         list_of_ratings = []
         for ind, player in enumerate(list_of_players):
             rating_ind = ind % team_size
             rating_pos = rating_names[rating_ind]
-            list_of_ratings.append((player, squad[player[rating_pos]]))
-        DAratings = self.DA.determine_ratings(list_of_players)
+            list_of_ratings.append((player, squad[player][rating_pos]))
+        DAratings = DA.determine_ratings(list_of_players)
 
         self.assertEqual(DAratings, list_of_ratings)
 
@@ -67,7 +67,7 @@ class DynamicTestCase(TestCase):
         """
         Make sure that the margin calculation is >= 0
         """
-        matchup = list(self.DA.squad.keys())
-        ratings = self.DA.determine_ratings(matchup)
-        margin = self.DA.calc_margin(ratings)
+        matchup = list(DA.squad.keys())
+        ratings = DA.determine_ratings(matchup)
+        margin = DA.calc_margin(ratings)
         self.assertGreaterEqual(margin, 0)
