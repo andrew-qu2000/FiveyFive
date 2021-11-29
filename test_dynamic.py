@@ -57,7 +57,8 @@ def run_trials(players, rating_names, team_size = 5, n = 100):
     print_basic_stats(margins, 'margin')
     print_quantiles(margins, 'margin', 100)
     print_basic_stats(runtimes, 'runtime')
-
+    print_quantiles(runtimes, 'runtime', 100)
+    
 def print_basic_stats(data, label):
     """Prints statistics on a set of numeric data.
 
@@ -108,4 +109,4 @@ if __name__=="__main__":
                     pass
                 ind += 1
             players_lst.append(line)
-    run_trials(players_lst, positions, 5, 100000)
+    run_trials(players_lst, positions, 5, 1000)
