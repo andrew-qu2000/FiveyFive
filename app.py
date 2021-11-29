@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, url_for, request, redirect, send_from_directory
 import firebase_admin
 from firebase_admin import credentials, firestore
 #import pandas as pd
@@ -39,5 +39,9 @@ def run_dynamic_algo():
     best_matchup = DA.matchup()
     return json.dumps(best_matchup)
 
+@app.route('/static/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 if __name__== '__main__':
     app.run('127.0.0.1', 5000, debug = True)
