@@ -97,7 +97,7 @@ if __name__=="__main__":
     TEAM_SIZE = 5
     players_lst = []
     positions = ['rating_top', 'rating_jun', 'rating_mid', 'rating_bot', 'rating_sup']
-    with open("test_dynamic.csv") as f:
+    with open("performance_test.csv") as f:
         for line in f:
             line = line.strip('\n').split(',')
             # lil hardcoded here eh
