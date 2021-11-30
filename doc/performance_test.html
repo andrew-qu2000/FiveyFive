@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module performance_test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>performance_test</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/andrewqu/Documents/FiveyFive/performance_test.py">/Users/andrewqu/Documents/FiveyFive/performance_test.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="scripts.dynamic_algo.html">scripts.dynamic_algo</a><br>
+</td><td width="25%" valign=top><a href="random.html">random</a><br>
+</td><td width="25%" valign=top><a href="statistics.html">statistics</a><br>
+</td><td width="25%" valign=top><a href="time.html">time</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-print_basic_stats"><strong>print_basic_stats</strong></a>(data, label)</dt><dd><tt>Prints&nbsp;statistics&nbsp;on&nbsp;a&nbsp;set&nbsp;of&nbsp;numeric&nbsp;data.<br>
+&nbsp;<br>
+Calculates&nbsp;and&nbsp;prints&nbsp;the&nbsp;minimum,&nbsp;median,&nbsp;mean,&nbsp;and&nbsp;maximum&nbsp;of&nbsp;a&nbsp;list&nbsp;of<br>
+numbers.<br>
+&nbsp;<br>
+Positional&nbsp;arguments:<br>
+data&nbsp;(iterable):&nbsp;iterable&nbsp;container&nbsp;of&nbsp;numbers<br>
+label&nbsp;(str):&nbsp;name&nbsp;of&nbsp;this&nbsp;dataset</tt></dd></dl>
+ <dl><dt><a name="-print_quantiles"><strong>print_quantiles</strong></a>(data, label, n=4)</dt><dd><tt>Prints&nbsp;quantiles&nbsp;of&nbsp;a&nbsp;set&nbsp;of&nbsp;numeric&nbsp;data.<br>
+&nbsp;<br>
+Calculates&nbsp;and&nbsp;prints&nbsp;quantile&nbsp;thresholds.<br>
+&nbsp;<br>
+Positional&nbsp;arguments:<br>
+data&nbsp;(iterable):&nbsp;iterable&nbsp;container&nbsp;of&nbsp;numbers<br>
+label&nbsp;(str):&nbsp;name&nbsp;of&nbsp;this&nbsp;dataset<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+n&nbsp;(int):&nbsp;number&nbsp;of&nbsp;quantiles&nbsp;to&nbsp;create</tt></dd></dl>
+ <dl><dt><a name="-run_trial"><strong>run_trial</strong></a>(players, rating_names, team_size=5)</dt><dd><tt>Performs&nbsp;the&nbsp;dynamic&nbsp;algorithm&nbsp;and&nbsp;returns&nbsp;metrics.<br>
+&nbsp;<br>
+Forms&nbsp;two&nbsp;random&nbsp;initial&nbsp;teams&nbsp;out&nbsp;of&nbsp;the&nbsp;given&nbsp;players.<br>
+Uses&nbsp;the&nbsp;dynamic&nbsp;algorithm&nbsp;to&nbsp;find&nbsp;a&nbsp;close&nbsp;matchup.<br>
+Returns&nbsp;skill&nbsp;margin&nbsp;between&nbsp;teams&nbsp;and&nbsp;runtime&nbsp;of&nbsp;the&nbsp;algorithm.<br>
+&nbsp;<br>
+Positional&nbsp;arguments:<br>
+players&nbsp;(list):&nbsp;2D&nbsp;list&nbsp;of&nbsp;players&nbsp;represented&nbsp;as&nbsp;[name,&nbsp;pos1,&nbsp;pos2&nbsp;...]<br>
+rating_names&nbsp;(list):&nbsp;list&nbsp;of&nbsp;positional&nbsp;names&nbsp;to&nbsp;be&nbsp;used&nbsp;as&nbsp;keys&nbsp;(top,&nbsp;jun,&nbsp;mid&nbsp;...)<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+team_size&nbsp;(int):&nbsp;number&nbsp;of&nbsp;players&nbsp;on&nbsp;each&nbsp;team</tt></dd></dl>
+ <dl><dt><a name="-run_trials"><strong>run_trials</strong></a>(players, rating_names, team_size=5, n=100)</dt><dd><tt>Performs&nbsp;many&nbsp;trials&nbsp;of&nbsp;the&nbsp;dynamic&nbsp;algorithm.<br>
+&nbsp;<br>
+Repeatedly&nbsp;calls&nbsp;run_trial&nbsp;and&nbsp;stores&nbsp;the&nbsp;results.<br>
+Prints&nbsp;statistics&nbsp;on&nbsp;performance&nbsp;metrics.<br>
+&nbsp;<br>
+Positional&nbsp;arguments:<br>
+players&nbsp;(list)&nbsp;--&nbsp;players&nbsp;to&nbsp;pass&nbsp;to&nbsp;<a href="#-run_trial">run_trial</a>()<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+team_size&nbsp;(int)&nbsp;--&nbsp;number&nbsp;of&nbsp;players&nbsp;on&nbsp;each&nbsp;team<br>
+n&nbsp;(int)&nbsp;--&nbsp;number&nbsp;of&nbsp;trials&nbsp;to&nbsp;perform</tt></dd></dl>
+</td></tr></table>
+</body></html>

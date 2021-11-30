@@ -1,7 +1,6 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html><head><title>Python: module scripts.brute_algo</title>
-<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head><body bgcolor="#f0f0f8">
 
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
@@ -10,7 +9,10 @@
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="scripts.html"><font color="#ffffff">scripts</font></a>.brute_algo</strong></big></big></font></td
 ><td align=right valign=bottom
 ><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/andrewqu/Documents/FiveyFive/scripts/brute_algo.py">/Users/andrewqu/Documents/FiveyFive/scripts/brute_algo.py</a></font></td></tr></table>
-    <p><tt>brute_algo</tt></p>
+    <p><tt>This&nbsp;approach&nbsp;guarantees&nbsp;that&nbsp;the&nbsp;global&nbsp;best&nbsp;matchup&nbsp;is&nbsp;selected.<br>
+However,&nbsp;the&nbsp;runtime&nbsp;of&nbsp;the&nbsp;algorithm&nbsp;does&nbsp;increase&nbsp;as&nbsp;the&nbsp;size&nbsp;of&nbsp;<br>
+the&nbsp;teams&nbsp;increases.&nbsp;This&nbsp;is&nbsp;not&nbsp;ideal&nbsp;when&nbsp;trying&nbsp;to&nbsp;serve&nbsp;a&nbsp;best<br>
+matchup&nbsp;to&nbsp;a&nbsp;client&nbsp;in&nbsp;a&nbsp;timely&nbsp;manner.</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ee77aa">
@@ -19,22 +21,29 @@
     
 <tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
 <dt><font face="helvetica, arial"><a href="scripts.brute_algo.html#BruteAlgo">BruteAlgo</a>
 </font></dt></dl>
+</dd>
+</dl>
  <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ffc8d8">
 <td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="BruteAlgo">class <strong>BruteAlgo</strong></a></font></td></tr>
+<font color="#000000" face="helvetica, arial"><a name="BruteAlgo">class <strong>BruteAlgo</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>Class&nbsp;for&nbsp;brute&nbsp;force&nbsp;approach&nbsp;to&nbsp;selecting&nbsp;the&nbsp;best&nbsp;team&nbsp;matchup.<br>
+<td colspan=2><tt><a href="#BruteAlgo">BruteAlgo</a>(squad)<br>
+&nbsp;<br>
+Class&nbsp;for&nbsp;brute&nbsp;force&nbsp;approach&nbsp;to&nbsp;selecting&nbsp;the&nbsp;best&nbsp;team&nbsp;matchup.<br>
 &nbsp;<br>
 Attributes:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;squad&nbsp;(dict):&nbsp;dictionary&nbsp;of&nbsp;Players&nbsp;with&nbsp;keys&nbsp;as&nbsp;UUIDs<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%">Methods defined here:<br>
-<dl><dt><a name="BruteAlgo-__init__"><strong>__init__</strong></a>(self, squad)</dt></dl>
+<dl><dt><a name="BruteAlgo-__init__"><strong>__init__</strong></a>(self, squad)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
 
 <dl><dt><a name="BruteAlgo-calc_margin"><strong>calc_margin</strong></a>(self, ratings)</dt><dd><tt>Method&nbsp;for&nbsp;calculating&nbsp;the&nbsp;margin&nbsp;between&nbsp;two&nbsp;teams&nbsp;in&nbsp;a&nbsp;matchup<br>
 &nbsp;<br>
@@ -52,12 +61,15 @@ Returns&nbsp;a&nbsp;list&nbsp;of&nbsp;tuples&nbsp;of&nbsp;(Player&nbsp;UUID,&nbs
 &nbsp;<br>
 Given:&nbsp;squad&nbsp;of&nbsp;N&nbsp;players&nbsp;with&nbsp;N/2&nbsp;ratings&nbsp;each<br>
 Return:&nbsp;a&nbsp;matchup&nbsp;of&nbsp;N&nbsp;players&nbsp;where&nbsp;the&nbsp;average&nbsp;of&nbsp;each&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;team&nbsp;yields&nbsp;the&nbsp;smallest&nbsp;margin<br>
-&nbsp;<br>
-This&nbsp;approach&nbsp;guarantees&nbsp;that&nbsp;the&nbsp;global&nbsp;best&nbsp;matchup&nbsp;is&nbsp;selected.<br>
-However,&nbsp;the&nbsp;runtime&nbsp;of&nbsp;the&nbsp;algorithm&nbsp;does&nbsp;increase&nbsp;as&nbsp;the&nbsp;size&nbsp;of&nbsp;<br>
-the&nbsp;teams&nbsp;increases.&nbsp;This&nbsp;is&nbsp;not&nbsp;ideal&nbsp;when&nbsp;trying&nbsp;to&nbsp;serve&nbsp;a&nbsp;best<br>
-matchup&nbsp;to&nbsp;a&nbsp;client&nbsp;in&nbsp;a&nbsp;timely&nbsp;manner.</tt></dd></dl>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;team&nbsp;yields&nbsp;the&nbsp;smallest&nbsp;margin</tt></dd></dl>
 
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
 </td></tr></table></td></tr></table>
 </body></html>

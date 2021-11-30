@@ -5,7 +5,7 @@ dev_env:
 
 docs:
 	mkdir -p doc
-	pydoc -w ./
+	pydoc3 -w ./
 	mv *.html doc
 
 tests: FORCE
