@@ -72,8 +72,8 @@ class DynamicTestCase(TestCase):
         margin = DA.calc_margin(ratings)
         self.assertGreaterEqual(margin, 0)
 
-    # def test_fail_on_purpose(self):
-    #     """
-    #     Fail and see if this prevents automatic deployment to Heroku through Github Actions
-    #     """
-    #     self.assertEqual(0,1)
+    def test_fail_on_purpose(self):
+        """
+        Fail and see if this prevents automatic deployment to Heroku through Github Actions
+        """
+        self.assertEqual(0,1)
