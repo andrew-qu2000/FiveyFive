@@ -1,10 +1,10 @@
 """
-This is a variation of the Simulated Annealing technique. The algorithm 
-derives possible states from a starting matchup by performing single 
+This is a variation of the Simulated Annealing technique. The algorithm
+derives possible states from a starting matchup by performing single
 player swaps and deriving the subsequent state's margin.
 
 The current state of the algorithm only returns a local minimum margin.
-By fully implementing the Simulated Annealing technique, a global 
+By fully implementing the Simulated Annealing technique, a global
 minimum can be achieved.
 """
 from copy import deepcopy
@@ -18,11 +18,11 @@ class DynamicAlgo():
         team_size (int): index that divides the squad into two teams
         explored  (set): a set of explored states, initialized empty
     """
-    def __init__(self, squad):
+    def __init__(self, squad, positions):
         self.squad = squad
         self.team_size = int(len(squad) / 2)
         self.explored = set()
-        self.rating_names = ['rating_top', 'rating_jun', 'rating_mid', 'rating_bot', 'rating_sup']
+        self.rating_names = positions
 
 
     def matchup(self):
@@ -30,13 +30,13 @@ class DynamicAlgo():
         Main method for determining the best matchup from a squad
 
         Given: squad of N players with N/2 ratings each
-        Return: a matchup of N players where the average of each 
+        Return: a matchup of N players where the average of each
                 team yields the smallest margin
         """
         margins = [] # list for keeping track of an iteration's margins
         # select a starting matchup (easiest is the initial squad itself)
         curr_matchup = list(self.squad.keys())
-        
+
         while curr_matchup:
             # determine the ratings and calculate margin for the matchup
             curr_ratings = self.determine_ratings(curr_matchup)
@@ -44,7 +44,7 @@ class DynamicAlgo():
 
             # get next states and their margins
             states = self.get_states(curr_matchup)
-        
+
             for state in states:
                 ratings = self.determine_ratings(state)
                 margins.append((self.calc_margin(ratings), state))
@@ -56,14 +56,14 @@ class DynamicAlgo():
 
             if curr_matchup in min_states: # best matchup has been found
                 return curr_matchup
-            else: 
+            else:
                 next_state = min_states.pop()
                 if min_margin:
                     # get the next state with the lowest margin
-                    # if there are more than one state in min_states, 
+                    # if there are more than one state in min_states,
                     # a local best matchup is found.
                     curr_matchup = next_state
-                else: 
+                else:
                 # the next state has a margin of 0, best matchup has been found
                     return next_state
 
@@ -73,7 +73,7 @@ class DynamicAlgo():
 
         The first half of the matchup is considered the first team
         and the latter half is the second team. The margin is calculated
-        by adding all of the ratings in each team and finding the 
+        by adding all of the ratings in each team and finding the
         absolute difference between the teams.
         """
         team_r = ratings[:self.team_size]
@@ -85,7 +85,7 @@ class DynamicAlgo():
     def determine_ratings(self, matchup):
         """
         Determing the ratings for each player according to positions
-        
+
         Takes a list of Player UUIDs that represents a matchup.
         Returns a list of tuples of (Player UUID, rating).
         """
@@ -121,7 +121,7 @@ class DynamicAlgo():
 if __name__ == "__main__":
     #a, b, c, d = ["ay", 68, 66], ["be", 82, 75], ["si", 92, 93], ["di", 72, 84]
     #squad = {'A':a, 'B':b, 'C':c, 'D':d}
-    
+
     a = {'rating_top': 69, 'rating_mid': 77, 'name': 'Terence', 'rating_bot': 68, 'rating_sup': 60, 'rating_jun': 66}
     b = {'rating_top': 75, 'rating_bot': 75, 'name': 'Jordon', 'rating_mid': 75, 'rating_jun': 75, 'rating_sup': 75}
     c = {'rating_top': 65, 'rating_mid': 65, 'rating_jun': 75, 'rating_sup': 83, 'name': 'Aymen', 'rating_bot': 82}
@@ -133,6 +133,6 @@ if __name__ == "__main__":
     i = {'rating_sup': 86, 'name': 'Andrew', 'rating_bot': 85, 'rating_jun': 85, 'rating_top': 92, 'rating_mid': 86}
     j = {'rating_top': 70, 'name': 'Alex', 'rating_mid': 70, 'rating_jun': 69, 'rating_sup': 68, 'rating_bot': 62}
     squad = {'A':a, 'B':b, 'C':c, 'D':d, 'E':e, 'F':f, 'G':g, 'H':h, 'I':i, 'J':j}
-    
+
     da = DynamicAlgo(squad)
     print(da.matchup())
