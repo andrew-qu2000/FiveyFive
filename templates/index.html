@@ -163,9 +163,9 @@ function runDynamic(fromRandom) {
     if (fromRandom) {
       for (var i = currPlayers.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
+        var temp = currPlayers[i];
+        currPlayers[i] = currPlayers[j];
+        currPlayers[j] = temp;
       }
     }
     // grab each players' data in order to pass back to Flask
