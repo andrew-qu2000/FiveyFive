@@ -120,7 +120,8 @@ div.red {
   </div>
 </div>
 <div>
-  <input type="button" value="Run Matchup Algorithm" onclick="runDynamic()">
+  <input type="button" value="Run Matchup Algorithm From Here" onclick="runDynamic(false)">
+  <input type="button" value="Run Matchup Algorithm From Random Initial State" onclick="runDynamic(true)">
 </div>
 <script>
 /**
@@ -155,9 +156,18 @@ var redRatings = {};
  * @param {}
  * @paran {}
  */
-function runDynamic() {
+function runDynamic(fromRandom) {
     // get the current list of players in the matchup in order by team
     currPlayers = document.getElementsByClassName("PlayerInfo");
+    // if FromRandom, then shuffle matchup to start algo from random state
+    if (fromRandom) {
+      for (var i = currPlayers.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+      }
+    }
     // grab each players' data in order to pass back to Flask
     matchup = {};
     for (let player of currPlayers) {

@@ -21,7 +21,7 @@ squad = {'A':a, 'B':b, 'C':c, 'D':d, 'E':e, 'F':f, 'G':g, 'H':h, 'I':i, 'J':j}
 team_size = int(len(squad)/2)
 rating_names = ['rating_top', 'rating_jun', 'rating_mid', 'rating_bot', 'rating_sup']
 
-DA = DynamicAlgo(squad)
+DA = DynamicAlgo(squad, rating_names)
 
 class DynamicTestCase(TestCase):
 
