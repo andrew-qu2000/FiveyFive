@@ -29,8 +29,12 @@ def hello():
     docs = {}
     for doc in doc_stream:
         docs[doc.id] = doc.to_dict()
-
-    return render_template('index.html', docs=docs)
+    # get position labels
+    # hardcoded for LoL settings for now
+    game_ref = db.collection(u"game_setup").document(u"league_of_legends")
+    game_dict = game_ref.get().to_dict()
+    positions = game_dict['position_labels']
+    return render_template('index.html', docs=docs, positions=positions)
 
 @app.route('/_dynamic_algo', methods = ['POST'])
 def run_dynamic_algo():
