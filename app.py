@@ -36,8 +36,11 @@ def hello():
 def run_dynamic_algo():
     #print("data received for dynamic algo")
     data = json.loads(request.form['matchup'])
-    DA = DynamicAlgo(data)
-    best_matchup = DA.matchup()
+    positions = request.form.getlist('positions[]')
+    from_random = request.form['fromRandom']
+    DA = DynamicAlgo(data, positions)
+    # weird line cause of JS true vs Python True
+    best_matchup = DA.matchup(from_random == 'true')
     return json.dumps(best_matchup)
 
 # @app.route('/static/favicon.ico')

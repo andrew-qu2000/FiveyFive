@@ -146,6 +146,7 @@ class Player{
 </script>
 <script>
 var playerData = {{ docs | safe }};
+var positions = {{ positions | safe }};
 var playerCards = document.getElementsByClassName("PlayerCard");
 var blueRatings = {};
 var redRatings = {};
@@ -156,18 +157,10 @@ var redRatings = {};
  * @param {}
  * @paran {}
  */
+ // TODO make this spacing consistent lol
 function runDynamic(fromRandom) {
     // get the current list of players in the matchup in order by team
     currPlayers = document.getElementsByClassName("PlayerInfo");
-    // if FromRandom, then shuffle matchup to start algo from random state
-    if (fromRandom) {
-      for (var i = currPlayers.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = currPlayers[i];
-        currPlayers[i] = currPlayers[j];
-        currPlayers[j] = temp;
-      }
-    }
     // grab each players' data in order to pass back to Flask
     matchup = {};
     for (let player of currPlayers) {
@@ -178,7 +171,9 @@ function runDynamic(fromRandom) {
     $.post({
       url: "/_dynamic_algo",
       data: {
-        'matchup': JSON.stringify(matchup)
+        'matchup': JSON.stringify(matchup),
+        'positions': positions,
+        'fromRandom': fromRandom
       },
       success: function(matchup) {
         // Nuke existing teams
