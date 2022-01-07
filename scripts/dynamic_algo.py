@@ -8,6 +8,7 @@ By fully implementing the Simulated Annealing technique, a global
 minimum can be achieved.
 """
 from copy import deepcopy
+import random
 
 class DynamicAlgo():
     """
@@ -25,7 +26,7 @@ class DynamicAlgo():
         self.rating_names = positions
 
 
-    def matchup(self):
+    def matchup(self, random_initial):
         """
         Main method for determining the best matchup from a squad
 
@@ -36,7 +37,10 @@ class DynamicAlgo():
         margins = [] # list for keeping track of an iteration's margins
         # select a starting matchup (easiest is the initial squad itself)
         curr_matchup = list(self.squad.keys())
-
+        #print(curr_matchup)
+        if (random_initial):
+            #print('shuffling')
+            random.shuffle(curr_matchup)
         while curr_matchup:
             # determine the ratings and calculate margin for the matchup
             curr_ratings = self.determine_ratings(curr_matchup)
@@ -55,6 +59,7 @@ class DynamicAlgo():
             margins = []
 
             if curr_matchup in min_states: # best matchup has been found
+                #print(min_margin)
                 return curr_matchup
             else:
                 next_state = min_states.pop()
@@ -90,6 +95,7 @@ class DynamicAlgo():
         Returns a list of tuples of (Player UUID, rating).
         """
         rated = []
+        # TODO: reflect change to generalized position labels instead of indices
         for idx, player in enumerate(matchup):
             # grab the correct rating according to the pos on team
             # accounts for the first element being the name of the player

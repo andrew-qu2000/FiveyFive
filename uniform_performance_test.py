@@ -23,7 +23,7 @@ def run_trial(players, team_size = 5):
     players_dict = chosen_players_df.to_dict('index')
     DA = dynamic_algo.DynamicAlgo(players_dict, chosen_players_df.columns)
     algo_start_time = time.time()
-    matchup = DA.matchup()
+    matchup = DA.matchup(False)
     algo_end_time = time.time()
     ratings = DA.determine_ratings(matchup)
     margin = DA.calc_margin(ratings)
@@ -88,22 +88,41 @@ def print_quantiles(data, label, n = 4):
     for i in range(n - 1):
         print((i+1) / n, '=', quants[i])
 
-def generate_uniform(position_labels, n_players = 15, low = 50, high = 100):
+def generate_ratings(position_labels, dist = 'uniform', n_players = 15, low = 50, high = 100, center = 75, stdev = 10):
     names = []
     with open('names.txt', 'r') as f:
         for line in f:
             names.append(line.strip())
 
     names = pd.Series(random.sample(names, n_players))
-    uniform_data = np.random.randint(low, high, (n_players, len(position_labels)))
-    uniform_df = pd.DataFrame(uniform_data, columns = position_labels)
-    uniform_df['name'] = names
-    print(uniform_df)
-    return uniform_df
+    rng = np.random.default_rng()
+    if dist == 'uniform':
+        data = rng.integers(low, high, (n_players, len(position_labels)))
+    elif dist == 'normal':
+        # numpy.random.Generator is the practice now
+        # but the normal distribution returns floats
+        # so I guess I'll just round them
+        data = rng.normal(center, stdev, (n_players, len(position_labels))).round().astype(int)
+    elif dist == 'one_main':
+        # In real life, most players main one position,
+        # Which should have a better rating than the other positions
+        data = np.empty((0,len(position_labels)), dtype=int)
+        for i in range(n_players):
+            offrole_center = rng.uniform(center - stdev * 1.5, center + stdev)
+            offrole_ratings = rng.normal(offrole_center, stdev / 2, len(position_labels) - 1).round().astype(int)
+            mainrole_rating = rng.integers(offrole_ratings.max() + stdev // 2, offrole_ratings.max() + stdev * 2)
+            ratings = np.insert(offrole_ratings, rng.integers(0,len(position_labels)), mainrole_rating)
+            data = np.append(data, [ratings], axis = 0)
+    df = pd.DataFrame(data, columns = position_labels)
+    df['name'] = names
+    print(df)
+    return df
 
 if __name__=="__main__":
     TEAM_SIZE = 5
     players_lst = []
     positions = ['rating_top', 'rating_jun', 'rating_mid', 'rating_bot', 'rating_sup']
 
-    run_trials(generate_uniform(positions, n_players = 30, low = 70, high = 100), team_size = 5, n = 1000)
+    #run_trials(generate_ratings(positions, n_players = 30, low = 70, high = 100), team_size = 5, n = 1000)
+    run_trials(generate_ratings(positions, dist = 'normal'), team_size = 5, n = 100)
+    run_trials(generate_ratings(positions, dist = 'one_main'), team_size = 5, n = 100)
