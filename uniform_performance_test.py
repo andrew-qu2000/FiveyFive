@@ -5,7 +5,7 @@ import time
 import random
 import statistics
 
-def run_trial(players, team_size = 5):
+def run_trial(players, weights, team_size = 5):
     """Performs the dynamic algorithm and returns metrics.
 
     Forms two random initial teams out of the given players.
@@ -21,16 +21,17 @@ def run_trial(players, team_size = 5):
 
     chosen_players_df = players.sample(TEAM_SIZE * 2)
     players_dict = chosen_players_df.to_dict('index')
-    DA = dynamic_algo.DynamicAlgo(players_dict, chosen_players_df.columns)
+    DA = dynamic_algo.DynamicAlgo(players_dict, chosen_players_df.columns, weights)
     algo_start_time = time.time()
     matchup = DA.matchup(False)
+    print(matchup)
     algo_end_time = time.time()
     ratings = DA.determine_ratings(matchup)
     margin = DA.calc_margin(ratings)
     runtime = algo_end_time - algo_start_time
     return margin, runtime
 
-def run_trials(players, team_size = 5, n = 100):
+def run_trials(players, weights, team_size = 5, n = 100):
     """Performs many trials of the dynamic algorithm.
 
     Repeatedly calls run_trial and stores the results.
@@ -46,7 +47,7 @@ def run_trials(players, team_size = 5, n = 100):
     margins = []
     runtimes = []
     for i in range(n):
-        margin, runtime = run_trial(players, team_size)
+        margin, runtime = run_trial(players, weights, team_size)
         margins.append(margin)
         runtimes.append(runtime)
     print_basic_stats(margins, 'margin')
@@ -122,7 +123,7 @@ if __name__=="__main__":
     TEAM_SIZE = 5
     players_lst = []
     positions = ['rating_top', 'rating_jun', 'rating_mid', 'rating_bot', 'rating_sup']
-
+    weights = [0.95, 1.05, 1.05, 1.05, 0.90]
     #run_trials(generate_ratings(positions, n_players = 30, low = 70, high = 100), team_size = 5, n = 1000)
-    run_trials(generate_ratings(positions, dist = 'normal'), team_size = 5, n = 100)
-    run_trials(generate_ratings(positions, dist = 'one_main'), team_size = 5, n = 100)
+    run_trials(generate_ratings(positions, dist = 'normal'), weights, team_size = 5, n = 10)
+    #run_trials(generate_ratings(positions, dist = 'one_main'), team_size = 5, n = 100)
