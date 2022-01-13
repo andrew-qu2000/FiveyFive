@@ -19,11 +19,12 @@ class DynamicAlgo():
         team_size (int): index that divides the squad into two teams
         explored  (set): a set of explored states, initialized empty
     """
-    def __init__(self, squad, positions):
+    def __init__(self, squad, positions, weights):
         self.squad = squad
         self.team_size = int(len(squad) / 2)
         self.explored = set()
         self.rating_names = positions
+        self.rating_weights = weights
 
 
     def matchup(self, random_initial):
@@ -101,7 +102,8 @@ class DynamicAlgo():
             # accounts for the first element being the name of the player
             rating_ind = idx % self.team_size
             rating_name = self.rating_names[rating_ind]
-            rated.append((player, self.squad[player][rating_name]))
+            rating_weight = self.rating_weights[rating_ind]
+            rated.append((player, self.squad[player][rating_name] * rating_weight))
         return rated
 
     def get_states(self, matchup):

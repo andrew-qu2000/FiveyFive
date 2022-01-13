@@ -20,8 +20,9 @@ div.blue {
 }
 div.PlayerCard {
   height: 100px;
+  padding-left: 10px;
 }
-span.PlayerInfo {
+span {
   line-height: 100px;
 }
 div.PositionCol {
@@ -34,6 +35,12 @@ div.red {
   grid-column: 3;
   background-color: #ef8a62;
   text-align: left;
+}
+div.team {
+  padding-left: 10px;
+}
+div.bench {
+  background-color: gray;
 }
 .top {
   grid-row: 1;
@@ -64,7 +71,7 @@ div.red {
 
 <body>
 
-<div class="wrapper">
+<div class="wrapper" id="chosen">
   <div class="blue top">
     <div class="PlayerCard">
     </div>
@@ -123,6 +130,9 @@ div.red {
   <input type="button" value="Run Matchup Algorithm From Here" onclick="runDynamic(false)">
   <input type="button" value="Run Matchup Algorithm From Random Initial State" onclick="runDynamic(true)">
 </div>
+<div id="the bench">
+
+</div>
 <script>
 /**
 * @typedef {Object} Player
@@ -147,6 +157,7 @@ class Player{
 <script>
 var playerData = {{ docs | safe }};
 var positions = {{ positions | safe }};
+var weights = {{ weights | safe }};
 var playerCards = document.getElementsByClassName("PlayerCard");
 var blueRatings = {};
 var redRatings = {};
@@ -160,7 +171,8 @@ var redRatings = {};
  // TODO make this spacing consistent lol
 function runDynamic(fromRandom) {
     // get the current list of players in the matchup in order by team
-    currPlayers = document.getElementsByClassName("PlayerInfo");
+    var chosen = document.querySelector('#chosen');
+    currPlayers = chosen.querySelectorAll('.PlayerInfo');
     // grab each players' data in order to pass back to Flask
     matchup = {};
     for (let player of currPlayers) {
@@ -173,18 +185,20 @@ function runDynamic(fromRandom) {
       data: {
         'matchup': JSON.stringify(matchup),
         'positions': positions,
+        'weights': weights,
         'fromRandom': fromRandom
       },
       success: function(matchup) {
         // Nuke existing teams
-        document.querySelectorAll('.PlayerInfo').forEach(e => e.remove());
+        document.querySelector('#chosen').querySelectorAll('.PlayerInfo').forEach(e => e.remove());
         // Use regex to convert json.dumps(matchup) into an array
         matchup = matchup.replace(/[\[\]'"]+/g, '').split(',');
         // Add players in the order they appear in matchup
         var i = 0;
         for (let uuid of matchup) {
           uuid = uuid.trim()
-          addToEmptyPlayerCard(new Player(uuid, playerData[uuid]), i);
+          var playerCard = playerCards[i]
+          addToEmptyPlayerCard(new Player(uuid, playerData[uuid]), playerCard);
           i += 1;
         }
         updateAverages();
@@ -198,14 +212,14 @@ function runDynamic(fromRandom) {
 * @param {Object} playerObj The player object to create PlayerInfo from
 * @paran {Number} playerCardsInd The index of the PlayerCard to add to in the array of PlayerCards
 */
-function addToEmptyPlayerCard(playerObj, playerCardsInd){
+function addToEmptyPlayerCard(playerObj, playerCard){
   var newPlayerInfo = document.createElement("span");
   newPlayerInfo.classList.add("PlayerInfo");
   newPlayerInfo.innerHTML = playerObj.name + "\t";
   newPlayerInfo.setAttribute("data-uniqueId", playerObj.uniqueId);
-  var pos = playerCards[playerCardsInd].parentElement.classList;
+  var pos = playerCard.parentElement.classList;
   var playerRating;
-  playerCards[playerCardsInd].appendChild(newPlayerInfo);
+  playerCard.appendChild(newPlayerInfo);
   // Need to generalize this to other games and positions
   switch(pos[1]){
     case 'top':
@@ -233,7 +247,7 @@ function addToEmptyPlayerCard(playerObj, playerCardsInd){
   if (pos[0] == "blue") {
     blueRatings[pos[1]] = playerRating;
   }
-  else {
+  else if (pos[0] == "red") {
     redRatings[pos[1]] = playerRating;
   }
 }
@@ -242,8 +256,23 @@ var i = 0;
 var playerDataArr = Object.entries(playerData);
 while (i < playerCards.length) {
   var keyVal= playerDataArr[i];
-  addToEmptyPlayerCard(new Player(keyVal[0],keyVal[1]), i);
+  var playerCard = playerCards[i]
+  addToEmptyPlayerCard(new Player(keyVal[0],keyVal[1]), playerCard);
   i += 1;
+}
+// Adds remaining players to bench
+// Code might be a little wet, revisit to make it DRY
+var bench = document.getElementById("the bench");
+while (i < playerDataArr.length) {
+  var benchSpot = document.createElement("div");
+  benchSpot.className = "bench";
+  var extraPlayerCard = document.createElement("div");
+  extraPlayerCard.className = "PlayerCard";
+  benchSpot.appendChild(extraPlayerCard);
+  bench.appendChild(benchSpot);
+  var keyVal = playerDataArr[i];
+  addToEmptyPlayerCard(new Player(keyVal[0],keyVal[1]), extraPlayerCard);
+  i += 1
 }
 updateAverages();
 
@@ -260,19 +289,24 @@ function updatePlayerCardRating(swappedPlayerCard, isMirror=false){
   }
   else {
     var newColorAndPos = swappedPlayerCard.parentElement.classList;
-    //console.log(swappedPlayerCard.firstElementChild.innerHTML);
+    //console.log(newColorAndPos);
+    //console.log(swappedPlayerCard.firstElementChild.innerHTML)
     var newDbPos = "rating_" + newColorAndPos[1];
   }
   var playerInfo = swappedPlayerCard.firstElementChild;
+  //console.log(playerInfo);
   var name = playerData[playerInfo.dataset.uniqueid]["name"];
   var newRating = playerData[playerInfo.dataset.uniqueid][newDbPos];
-  playerInfo.innerHTML = name + "\t" + newRating;
-
+  playerInfo.innerHTML = name
+  if (newRating != undefined) {
+    playerInfo.innerHTML += "\t" + newRating;
+  }
   if (newColorAndPos) {
+    //console.log("new color and pos");
     if (newColorAndPos[0] == 'blue') {
       blueRatings[newColorAndPos[1]] = newRating;
     }
-    else {
+    else if (newColorAndPos[0] == 'red'){
       redRatings[newColorAndPos[1]] = newRating;
     }
     updateAverages();
@@ -285,6 +319,7 @@ function updatePlayerCardRating(swappedPlayerCard, isMirror=false){
 * @param {Element} container The parent of the PlayerCard that must be updated
 */
 function updateByContainer(container){
+  //console.log(container);
   updatePlayerCardRating(container.firstElementChild);
 }
 
@@ -293,6 +328,8 @@ function updateByContainer(container){
 * and updates the elements that display the averages
 */
 function updateAverages() {
+  //console.log(blueRatings);
+  //console.log(redRatings);
   var blueVals = Object.values(blueRatings);
   var blueavg = blueVals.reduce(function(a,b) {return a + b;}, 0) / blueVals.length;
   var redavg = Object.values(redRatings).reduce(function(a,b) {return a + b;}, 0) / Object.keys(redRatings).length;
@@ -300,7 +337,7 @@ function updateAverages() {
   document.getElementById("red avg").innerHTML = redavg;
 }
 
-const swappable = new Swappable.default(document.querySelectorAll('.blue, .red'), {
+const swappable = new Swappable.default(document.querySelectorAll('.blue, .red, .bench'), {
   draggable: '.PlayerCard'
 });
 
