@@ -34,17 +34,22 @@ def hello():
     game_ref = db.collection(u"game_setup").document(u"league_of_legends")
     game_dict = game_ref.get().to_dict()
     positions = game_dict['position_labels']
-    return render_template('index.html', docs=docs, positions=positions)
+    weights = game_dict['rating_weights']
+    return render_template('index.html', docs=docs, positions=positions, weights=weights)
 
 @app.route('/_dynamic_algo', methods = ['POST'])
 def run_dynamic_algo():
     #print("data received for dynamic algo")
     data = json.loads(request.form['matchup'])
     positions = request.form.getlist('positions[]')
+    # is there any other standard for this casting?
+    weights = [float(k) for k in request.form.getlist('weights[]')]
     from_random = request.form['fromRandom']
-    DA = DynamicAlgo(data, positions)
-    # weird line cause of JS true vs Python True
+    DA = DynamicAlgo(data, positions, weights)
+    # weird line cause of js true vs python True
     best_matchup = DA.matchup(from_random == 'true')
+    ratings = DA.determine_ratings(best_matchup)
+    margin = DA.calc_margin(ratings)
     return json.dumps(best_matchup)
 
 # @app.route('/static/favicon.ico')
